@@ -1,6 +1,7 @@
 import { hashPassword } from "../configs/hashPassword.js"
 import { generateVerificationCode } from "../configs/verificationCode.js"
 import conn from "../database/db.js"
+import { verificationCodeEmail } from "../mail/mail.js"
 
 export const signup = async (request,response) => {
     const { firstName, lastName, email, password} = request.body
@@ -40,4 +41,18 @@ export const signup = async (request,response) => {
         console.log(error)
         return response.status(500).json({success: false, message: "Internal server error"})        
     } 
+
+    try {
+        const sqlQuery = "INSERT INTO userEmail(firstName,lastName,email,password,verificationToken,verificationTokenExpiresAT) VALUES(?,?,?,?,?,?)"
+        conn.query(sqlQuery,[firstName,lastName,email,encryptedPassword,verificationToken,verificationTokenExpiresAT],(error,results) => {
+            if (error) return response.status(400).json({success: false, message: error})
+            if (results.length > 0) {
+                await verificationCodeEmail(email,verificationToken)
+                return response.status(201).json({success: true, message:"Account created successfully"})
+            }
+        })
+    } catch (error) {
+        console.log(error)
+        return response.status(500).json({success: false, message: "Internal server error"})
+    }
 }
