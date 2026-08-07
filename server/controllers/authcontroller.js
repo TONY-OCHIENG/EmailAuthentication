@@ -1,4 +1,5 @@
 import { hashPassword } from "../configs/hashPassword.js"
+import { generateVerificationCode } from "../configs/verificationCode.js"
 
 export const signup = async (request,response) => {
     const { firstName, lastName, email, password} = request.body
@@ -21,6 +22,8 @@ export const signup = async (request,response) => {
             message:"Enter a valid email"
         })
     }
-    //encrypting password befor database insertion
+    //encrypting password before database insertion
     const encryptedPassword = hashPassword(password)
+    const verificationToken = generateVerificationCode()
+    const verificationTokenExpiresAT = Date.now() + 24 * 60 * 60 * 1000 
 }
