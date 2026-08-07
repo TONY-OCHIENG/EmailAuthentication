@@ -5,7 +5,7 @@ dotenv.config()
 
 export const verificationCodeEmail = async (email,verificationCode) => {
     try {
-        const transportert = nodemailer.createTransport({
+        const transporter = nodemailer.createTransport({
             host: process.env.HOST,
             port: process.env.EMAIL_PORT,
             secure: false,
@@ -19,7 +19,8 @@ export const verificationCodeEmail = async (email,verificationCode) => {
             subject: "Verification code",
             html: WELCOME_VERIFICATION.replace("{VERIFICATION_CODE}",verificationCode)
         };
-        console.log("Verification email sent successfully")
+        const info = await transporter.sendMail(message);
+        console.log("Message sent", info.messageId);
     } catch (error) {
         console.log(error)
         throw new Error(error)
