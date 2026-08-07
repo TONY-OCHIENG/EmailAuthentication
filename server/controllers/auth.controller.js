@@ -1,5 +1,6 @@
 import { hashPassword } from "../configs/hashPassword.js"
 import { generateVerificationCode } from "../configs/verificationCode.js"
+import conn from "../database/db.js"
 
 export const signup = async (request,response) => {
     const { firstName, lastName, email, password} = request.body
@@ -25,5 +26,18 @@ export const signup = async (request,response) => {
     //encrypting password before database insertion
     const encryptedPassword = hashPassword(password)
     const verificationToken = generateVerificationCode()
-    const verificationTokenExpiresAT = Date.now() + 24 * 60 * 60 * 1000 
+    const verificationTokenExpiresAT = Date.now() + 24 * 60 * 60 * 1000
+    //checking if the email exists
+    try {
+        const sqlQuery = "SELECT email from userEmail WHERE email = ?"
+        conn.query(sqlQuery,[email], (error,result) => {
+            if (error) return response.status(400).json({success: false, message: error})
+            if (result.length > 0) {
+                return response.status(400).json({success: false, message: "email already exist"})
+            }
+        })
+    } catch (error) {
+        console.log(error)
+        return response.status(500).json({success: false, message: "Internal server error"})        
+    } 
 }

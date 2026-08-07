@@ -24,5 +24,4 @@ export const verificationCodeEmail = async (email,verificationCode) => {
         console.log(error)
         throw new Error(error)
     }
-
 }
