@@ -17,7 +17,7 @@ export const verificationCodeEmail = async (email,verificationCode) => {
         const message = {
             to: email,
             subject: "Verification code",
-            html: WELCOME_VERIFICATION.replace("{VERIFICATION_CODE}}",verificationCode)
+            html: WELCOME_VERIFICATION.replace("{VERIFICATION_CODE}",verificationCode)
         };
         console.log("Verification email sent successfully")
     } catch (error) {
