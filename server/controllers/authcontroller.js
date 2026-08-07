@@ -1,3 +1,4 @@
+import { hashPassword } from "../configs/hashPassword.js"
 
 export const signup = async (request,response) => {
     const { firstName, lastName, email, password} = request.body
@@ -20,4 +21,6 @@ export const signup = async (request,response) => {
             message:"Enter a valid email"
         })
     }
+    //encrypting password befor database insertion
+    const encryptedPassword = hashPassword(password)
 }
