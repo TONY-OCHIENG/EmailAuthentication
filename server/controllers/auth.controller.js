@@ -143,7 +143,7 @@ export const resetPassword = async (request,response) => {
                 const resetPasswordToken = crypto.randomBytes(20).toString('hex')
                 const resetPasswordTokenExpiresAT = Date.now() + 1 * 60 * 60 * 1000
             } else {
-                return response.status(400).json({success: false, message: "user doesn't exist or invalid email"})
+                return response.status(400).json({success: false, message: "user doesn't exist"})
             }
         })
         
