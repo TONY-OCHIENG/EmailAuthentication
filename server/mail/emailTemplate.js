@@ -156,3 +156,104 @@ export const WELCOME_VERIFICATION = `
 </html>
 
 `
+export const WELCOME_EMAIL = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome Email</title>
+<style>
+  /* Note: most email clients strip <style> blocks or support only a subset.
+     Key styles are also inlined below for maximum compatibility. */
+  body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+  table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+  img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+  body { margin: 0; padding: 0; width: 100% !important; height: 100% !important; background-color: #f4f4f7; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+  a { color: #4f46e5; }
+  @media screen and (max-width: 600px) {
+    .email-container { width: 100% !important; }
+    .fluid-padding { padding-left: 24px !important; padding-right: 24px !important; }
+  }
+</style>
+</head>
+<body style="margin:0; padding:0; background-color:#f4f4f7;">
+
+  <!-- Preheader text (hidden preview text in inbox) -->
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
+    Welcome aboard — here's how to get started.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f7;">
+    <tr>
+      <td align="center" style="padding: 40px 16px;">
+
+        <table role="presentation" class="email-container" width="600" cellpadding="0" cellspacing="0" style="width:600px; max-width:100%; background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+
+          <!-- Header / Logo -->
+          <tr>
+            <td align="center" style="background-color:#4f46e5; padding:32px 24px;">
+              App Name
+            </td>
+          </tr>
+
+          <!-- Hero -->
+          <tr>
+            <td class="fluid-padding" style="padding:40px 40px 24px 40px;">
+              <h1 style="margin:0 0 16px 0; font-size:24px; line-height:1.3; color:#1f2937; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                Welcome, {first_name} 👋
+              </h1>
+              <p style="margin:0; font-size:16px; line-height:1.6; color:#4b5563; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                We're really glad you're here. Your account is all set up, and there are just a couple of quick steps to get you fully up and running.
+              </p>
+            </td>
+          </tr>
+
+          <!-- CTA Button -->
+          <tr>
+            <td class="fluid-padding" align="center" style="padding:8px 40px 32px 40px;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" style="border-radius:8px; background-color:#4f46e5;">
+                    <a href="{{cta_link}}" target="_blank" style="display:inline-block; padding:14px 32px; font-size:16px; font-weight:600; color:#ffffff; text-decoration:none; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                      Get Started
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Divider -->
+          <tr>
+            <td style="padding:0 40px;">
+              <hr style="border:none; border-top:1px solid #e5e7eb; margin:0;">
+            </td>
+          </tr>       
+
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#f9fafb; padding:24px 40px; text-align:center;">
+              <p style="margin:0 0 8px 0; font-size:13px; color:#9ca3af; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                Questions? Just reply to this email — we're happy to help.
+              </p>
+              <p style="margin:0; font-size:13px; color:#9ca3af; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                {{company_name}} · {{company_address}}
+              </p>
+              <p style="margin:12px 0 0 0; font-size:13px;">
+                <a href="{{unsubscribe_link}}" style="color:#9ca3af; text-decoration:underline;">Unsubscribe</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
+
+
+`
