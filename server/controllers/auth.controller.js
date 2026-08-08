@@ -127,3 +127,26 @@ export const login = async (request,response) => {
         return response.status(500).json({success:false, message:"Internal server error"})
     }
 }
+
+export const resetPassword = async (request,response) => {
+    const { email } = request.body
+    if (!email) {
+        return response.status(400).json({success: false, message: "Fill the required field"})
+    }
+
+    try {
+        const sqlQuery = "Select email from userEmail WHERE email = ?"
+        conn.query(sqlQuery,[email],(error,result) => {
+            if (error) return response.status(400).json({success: false, message: error})
+            if (result.length > 0) {
+
+            } else {
+                return response.status(400).json({success: false, message: "user doesn't exist"})
+            }
+        })
+        
+    } catch (error) {
+        console.log(error)
+        return response.status(500).json({success: false, message:"Internal server error"})
+    }
+}
