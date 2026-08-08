@@ -64,6 +64,17 @@ export const verifyCode = async (request, response) => {
         const sqlQuery = "SELECT verificationToken, verificationTokenExpiresAT FROM userEmail WHERE verificationToken = ?"
         conn.query(sqlQuery,[code],(error,result) => {
             if (error) return response.status(400).json({success: false, message: error})
+            if (result.length > 0) {
+                if (result[0].verificationToken && result[0].verificationTokenExpiresAT >= Date.now()){
+                    const querySQL = "UPDATE userEmail SET isVerified = true WHERE verificationToken = ?"
+                    conn.query(querySQL,[code],(err,results) => {
+                        if (err) return response.status(400).json({success: false, message: err})
+                        return response.status(200).json({success: true, message: "Email verified successfully"})
+                    })                    
+                } else {
+                    return response.status(400).json({success: false, message: "Enter a valid code or code expired"})
+                }                
+            }
         })
     } catch (error) {
         console.log(error)
