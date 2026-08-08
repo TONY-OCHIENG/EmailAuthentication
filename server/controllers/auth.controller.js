@@ -3,6 +3,7 @@ import { generateVerificationCode } from "../configs/verificationCode.js"
 import conn from "../database/db.js"
 import { verificationCodeEmail, welcomeEmail } from "../mail/mail.js"
 import jwt from 'jsonwebtoken'
+import crypto from 'crypto'
 
 export const signup = async (request,response) => {
     const { firstName, lastName, email, password} = request.body
@@ -139,9 +140,10 @@ export const resetPassword = async (request,response) => {
         conn.query(sqlQuery,[email],(error,result) => {
             if (error) return response.status(400).json({success: false, message: error})
             if (result.length > 0) {
-
+                const resetPasswordToken = crypto.randomBytes(20).toString('hex')
+                const resetPasswordTokenExpiresAT = Date.now() + 1 * 60 * 60 * 1000
             } else {
-                return response.status(400).json({success: false, message: "user doesn't exist"})
+                return response.status(400).json({success: false, message: "user doesn't exist or invalid email"})
             }
         })
         
