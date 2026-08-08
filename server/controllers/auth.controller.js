@@ -1,7 +1,9 @@
-import { hashPassword } from "../configs/hashPassword.js"
+import { comparepassword, hashPassword } from "../configs/hashPassword.js"
 import { generateVerificationCode } from "../configs/verificationCode.js"
 import conn from "../database/db.js"
 import { verificationCodeEmail, welcomeEmail } from "../mail/mail.js"
+import jwt from 'jsonwebtoken'
+
 export const signup = async (request,response) => {
     const { firstName, lastName, email, password} = request.body
     //cheking if all required fields are filled with user details
@@ -90,5 +92,35 @@ export const verifyCode = async (request, response) => {
     } catch (error) {
         console.log(error)
         throw new Error(error)
+    }
+}
+
+export const login = async (request,response) => {
+    const { email, password } = request.body
+    if (!email || !password) {
+        return response.status(400).json({success: false, message: "Please fill all fields"})
+    }
+    try {
+        const sqlQuery = "SELECT email,password FROM userEmail WHERE email = ?"
+        conn.query(sqlQuery,[email], (error,result) => {
+            if (error) return response.status(400).json({success: false, message: error})
+            if (result.length > 0) {
+                const hpassword = comparepassword(password,result[0].password)
+                if (hpassword) {
+                    const lastName = result[0].lastName
+                    const firstName = result[0].firstName
+                    const token = jwt.sign({lastName,firstName},process.env.JWT_SECRET,{expiresIn:"1d"})
+                    response.cookie("token",token,({
+                        httpOnly: true,
+                        secure:process.env.NODE_ENV === "production",
+                        sameSite: "strict",
+                        maxAge: 1 * 24 * 60 * 60 * 1000
+                    }))
+                }
+            }
+        })
+    } catch (error) {
+        console.log(error)
+        return response.status(500).json({success:false, message:"Internal server error"})
     }
 }
