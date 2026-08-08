@@ -116,6 +116,9 @@ export const login = async (request,response) => {
                         sameSite: "strict",
                         maxAge: 1 * 24 * 60 * 60 * 1000
                     }))
+                    return response.status(200).json({success: true, message:"Login successfully"})
+                } else {
+                    return response.status(400).json({success:false, message: "wrong credentials"})
                 }
             }
         })
