@@ -53,3 +53,20 @@ export const signup = async (request,response) => {
         return response.status(500).json({success: false, message: "Internal server error"})
     }
 }
+
+export const verifyCode = async (request, response) => {
+    const { code } = request.body
+    if (!code) {
+        return response.status(400).json({success: false, message: "Enter a valid code"})
+    }
+
+    try {
+        const sqlQuery = "SELECT verificationToken, verificationTokenExpiresAT FROM userEmail WHERE verificationToken = ?"
+        conn.query(sqlQuery,[code],(error,result) => {
+            if (error) return response.status(400).json({success: false, message: error})
+        })
+    } catch (error) {
+        console.log(error)
+        throw new Error(error)
+    }
+}
