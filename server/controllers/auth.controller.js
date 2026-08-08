@@ -1,7 +1,7 @@
 import { hashPassword } from "../configs/hashPassword.js"
 import { generateVerificationCode } from "../configs/verificationCode.js"
 import conn from "../database/db.js"
-import { verificationCodeEmail } from "../mail/mail.js"
+import { verificationCodeEmail, welcomeEmail } from "../mail/mail.js"
 export const signup = async (request,response) => {
     const { firstName, lastName, email, password} = request.body
     //cheking if all required fields are filled with user details
@@ -69,6 +69,17 @@ export const verifyCode = async (request, response) => {
                     const querySQL = "UPDATE userEmail SET isVerified = true WHERE verificationToken = ?"
                     conn.query(querySQL,[code],(err,results) => {
                         if (err) return response.status(400).json({success: false, message: err})
+                        if (results) {
+                            const querySQ = "SELECT CONCAT(firstName,' ',lastName) AS fullName, email FROM userEmail where verificationToken = ?"
+                            conn.query(querySQ,[code],(errors,respo) => {
+                                if (errors) return response.status(400).json({success: false, message: errors})
+                                if (respo.length > 0) {
+                                     const fullName = respo[0].fullName
+                                     const email = respo[0].email
+                                     welcomeEmail(email,fullName)
+                                }
+                            })                            
+                        }
                         return response.status(200).json({success: true, message: "Email verified successfully"})
                     })                    
                 } else {
