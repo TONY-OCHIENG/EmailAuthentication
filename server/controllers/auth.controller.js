@@ -142,11 +142,15 @@ export const resetPassword = async (request,response) => {
             if (result.length > 0) {
                 const resetPasswordToken = crypto.randomBytes(20).toString('hex')
                 const resetPasswordTokenExpiresAT = Date.now() + 1 * 60 * 60 * 1000
+                const querySQ = "INSERT INTO userEmail(resetPasswordToken,resetPasswordTokenExpiresAT) VALUES(?,?)"
+                conn.query(querySQ,[resetPasswordToken,resetPasswordTokenExpiresAT],(err,results) => {
+                    if (err) return response.status(400).json({success: false, message: err})
+                    if (results.length > 0) {}
+                })
             } else {
                 return response.status(400).json({success: false, message: "user doesn't exist"})
             }
-        })
-        
+        })                
     } catch (error) {
         console.log(error)
         return response.status(500).json({success: false, message:"Internal server error"})
