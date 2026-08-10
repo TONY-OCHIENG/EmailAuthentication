@@ -409,12 +409,6 @@ export const RESET_LINK = `
               <div class="btn-wrapper">
                 <a href="{RESET_LINK}" class="btn" target="_blank">Reset Password</a>
               </div>
-
-              <p class="fallback-link">
-                If the button doesn't work, copy and paste this link into your browser:<br>
-                <a href="{RESET_LINK}" style="color:#4f46e5;">{RESET_LINK}</a>
-              </p>
-
               <hr class="divider">
 
               <p class="expiry-note">

@@ -145,7 +145,7 @@ export const resetPassword = async (request,response) => {
                 const querySQ = "UPDATE userEmail SET resetPasswordToken = ?,resetPasswordTokenExpiresAT = ? WHERE email = ?"
                 conn.query(querySQ,[resetPasswordToken,resetPasswordTokenExpiresAT,email],(err,results) => {
                     if (err) return response.status(400).json({success: false, message: err})
-                    if (results.length > 0) {
+                    if (results) {
                         resetLink(email,`${process.env.CLIENT_URL}/reset-password/${resetPasswordToken}`)
                         return response.status(200).json({success: true, message:"Reset password link has been sent to your email"})                        
                     }
