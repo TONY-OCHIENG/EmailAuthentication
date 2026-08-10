@@ -172,4 +172,27 @@ export const newPassword = async (request,response) => {
     if (password != confirmationpassword) {
         return response.status(400).json({success: false, message: "Password didn't match"})
     }
+
+    const hpassword = hashPassword(password)
+
+    try {
+        const sqlQuery = "SELECT resetPasswordToken, resetPasswordTokenExpiresAT from userEmail WHERE resetPasswordToken = ?"
+        conn.query(sqlQuery,[token],(error,result) => {
+            if (error) return response.status(400).json({success: false, message: error})
+            if (result.length > 0) {
+                if (result[0].resetPasswordToken && result[0].resetPasswordTokenExpiresAT >= Date.now()) {
+                    const querySQ = "UPDATE userEmail SET password = ? WHERE resetPasswordToken = ?"
+                    conn.query(querySQ,[hpassword,token], (err,results) => {
+                        if (err) return response.status(400).json({success: false, message: err})
+                        return response.status(200).json({success: true, message: "password updated successfully"})
+                    })
+                }
+            }else {
+                return response.status(403).json({success: false, message: "Token invalid"})
+            }
+        })
+    } catch (error) {
+        console.log(error)
+        return response.status(500).json({success: false, message:"Internal server error"})
+    }
 }
