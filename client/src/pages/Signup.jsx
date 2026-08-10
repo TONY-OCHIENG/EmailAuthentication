@@ -1,8 +1,9 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import Inputs from '../components/Inputs'
-import { Lock, Mail, User } from 'lucide-react'
+import { Loader, Lock, Mail, User } from 'lucide-react'
 function Signup() {
+    const isLoading = false
   return (
     <motion.div
     initial={{opacity: 0, y:20}}
@@ -27,13 +28,24 @@ function Signup() {
                 <Inputs
                 icon={Mail}
                 type="email"
-                placeholder="eg. johndoe@gmail.com"
+                placeholder="Email"
                 />
                 <Inputs
                 icon={Lock}
                 type="password"
                 placeholder="Password"
                 />
+                 <motion.button
+                className='mt-5 w-full py-3 px-4 bg-gradient-to-r from-gray-500 to-gray-600 text-white
+                font-bold rounded-lg shadow-lg hover:from-gray-700 hover:to-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500
+                focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200'
+                whileHover={{scale: 1.02}}
+                whileTap={{scale: 0.98}}
+                type='submit'
+                disabled={isLoading}
+                >
+                    {isLoading ? <Loader className=' animate-spin mx-auto' size={24} /> : "Sign Up"}
+                </motion.button>
             </form>
         </div>
     </motion.div>
