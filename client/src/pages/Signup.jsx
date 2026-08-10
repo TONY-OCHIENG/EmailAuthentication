@@ -18,7 +18,9 @@ function Signup() {
             [name] : value
         }))
     }
-    console.log(values)
+    const handleSubmit = (event) => {
+        event.preventDefault()
+    }
   return (
     <motion.div
     initial={{opacity: 0, y:20}}
@@ -29,7 +31,7 @@ function Signup() {
         <div className='p-8'>
             <h2 className='text-3xl font-bold mb-6 text-center bg-gradient-to-r from-gray-400 to-gray-600
             text-transparent bg-clip-text'>Create account</h2>
-            <form action="">
+            <form action="" onSubmit={handleSubmit}>
                 <Inputs
                 icon={User}
                 type="text"
