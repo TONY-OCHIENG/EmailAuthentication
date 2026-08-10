@@ -10,11 +10,11 @@ export const signup = async (request,response) => {
     const { firstName, lastName, email, password} = request.body
     //cheking if all required fields are filled with user details
     if (!firstName || !lastName || !email || !password) {
-        return response.status(400).json({success: false, message: "Fill all required fields"})
+        return response.status(200).json({success: false, message: "Fill all required fields"})
     }
     //checking password length
     if (password.length < 6) {
-        return response.status(400).json({
+        return response.status(200).json({
             success: false, 
             message:"Password length must be greater than five characters"
         })
@@ -22,7 +22,7 @@ export const signup = async (request,response) => {
     //validating email using regex
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
     if (!regex.test(email)) {
-        return response.status(400).json({
+        return response.status(200).json({
             success: false,
             message:"Enter a valid email"
         })
@@ -35,10 +35,10 @@ export const signup = async (request,response) => {
     try {
         const checkEmail = "SELECT email from userEmail WHERE email = ?"
         conn.query(checkEmail,[email], (error,result) => {
-            
+
             if (error) return response.status(500).json({success: false, message: error})
             if (result.length > 0) {
-                return response.status(400).json({success: false, message: "email already exist"})
+                return response.status(200).json({success: false, message: "email already exist"})
             }
 
             const sqlQuery = "INSERT INTO userEmail(firstName,lastName,email,password,verificationToken,verificationTokenExpiresAT) VALUES(?,?,?,?,?,?)"
@@ -57,22 +57,22 @@ export const signup = async (request,response) => {
 export const verifyCode = async (request, response) => {
     const { code } = request.body
     if (!code) {
-        return response.status(400).json({success: false, message: "Enter a valid code"})
+        return response.status(200).json({success: false, message: "Enter a valid code"})
     }
 
     try {
         const sqlQuery = "SELECT verificationToken, verificationTokenExpiresAT FROM userEmail WHERE verificationToken = ?"
         conn.query(sqlQuery,[code],(error,result) => {
-            if (error) return response.status(400).json({success: false, message: error})
+            if (error) return response.status(200).json({success: false, message: error})
             if (result.length > 0) {
                 if (result[0].verificationToken && result[0].verificationTokenExpiresAT >= Date.now()){
                     const querySQL = "UPDATE userEmail SET isVerified = true WHERE verificationToken = ?"
                     conn.query(querySQL,[code],(err,results) => {
-                        if (err) return response.status(400).json({success: false, message: err})
+                        if (err) return response.status(200).json({success: false, message: err})
                         if (results) {
                             const querySQ = "SELECT CONCAT(firstName,' ',lastName) AS fullName, email FROM userEmail where verificationToken = ?"
                             conn.query(querySQ,[code],(errors,respo) => {
-                                if (errors) return response.status(400).json({success: false, message: errors})
+                                if (errors) return response.status(200).json({success: false, message: errors})
                                 if (respo.length > 0) {
                                      const fullName = respo[0].fullName
                                      const email = respo[0].email
@@ -83,7 +83,7 @@ export const verifyCode = async (request, response) => {
                         return response.status(200).json({success: true, message: "Email verified successfully"})
                     })                    
                 } else {
-                    return response.status(400).json({success: false, message: "Enter a valid code or code expired"})
+                    return response.status(200).json({success: false, message: "Enter a valid code or code expired"})
                 }                
             }
         })
@@ -96,12 +96,12 @@ export const verifyCode = async (request, response) => {
 export const login = async (request,response) => {
     const { email, password } = request.body
     if (!email || !password) {
-        return response.status(400).json({success: false, message: "Please fill all fields"})
+        return response.status(200).json({success: false, message: "Please fill all fields"})
     }
     try {
         const sqlQuery = "SELECT email,password FROM userEmail WHERE email = ?"
         conn.query(sqlQuery,[email], (error,result) => {
-            if (error) return response.status(400).json({success: false, message: error})
+            if (error) return response.status(200).json({success: false, message: error})
             if (result.length > 0) {
                 const hpassword = comparepassword(password,result[0].password)
                 if (hpassword) {
@@ -116,7 +116,7 @@ export const login = async (request,response) => {
                     }))
                     return response.status(200).json({success: true, message:"Login successfully"})
                 } else {
-                    return response.status(400).json({success:false, message: "wrong credentials"})
+                    return response.status(200).json({success:false, message: "wrong credentials"})
                 }
             }
         })
@@ -129,26 +129,26 @@ export const login = async (request,response) => {
 export const resetPassword = async (request,response) => {
     const { email } = request.body
     if (!email) {
-        return response.status(400).json({success: false, message: "Fill the required field"})
+        return response.status(200).json({success: false, message: "Fill the required field"})
     }
 
     try {
         const sqlQuery = "Select email from userEmail WHERE email = ?"
         conn.query(sqlQuery,[email],(error,result) => {
-            if (error) return response.status(400).json({success: false, message: error})
+            if (error) return response.status(200).json({success: false, message: error})
             if (result.length > 0) {
                 const resetPasswordToken = crypto.randomBytes(20).toString('hex')
                 const resetPasswordTokenExpiresAT = new Date( Date.now() + 1 * 60 * 60 * 1000)
                 const querySQ = "UPDATE userEmail SET resetPasswordToken = ?,resetPasswordTokenExpiresAT = ? WHERE email = ?"
                 conn.query(querySQ,[resetPasswordToken,resetPasswordTokenExpiresAT,email],(err,results) => {
-                    if (err) return response.status(400).json({success: false, message: err})
+                    if (err) return response.status(200).json({success: false, message: err})
                     if (results) {
                         resetLink(email,`${process.env.CLIENT_URL}/reset-password/${resetPasswordToken}`)
                         return response.status(200).json({success: true, message:"Reset password link has been sent to your email"})                        
                     }
                 })
             } else {
-                return response.status(400).json({success: false, message: "user doesn't exist"})
+                return response.status(200).json({success: false, message: "user doesn't exist"})
             }
         })                
     } catch (error) {
@@ -162,11 +162,11 @@ export const newPassword = async (request,response) => {
     const { token } = request.params
 
     if (!password || !confirmationpassword) {
-        return response.status(400).json({success: false, message: "fill all the fields"})
+        return response.status(200).json({success: false, message: "fill all the fields"})
     }
 
     if (password != confirmationpassword) {
-        return response.status(400).json({success: false, message: "Password didn't match"})
+        return response.status(200).json({success: false, message: "Password didn't match"})
     }
 
     const hpassword = hashPassword(password)
@@ -174,16 +174,16 @@ export const newPassword = async (request,response) => {
     try {
         const sqlQuery = "SELECT resetPasswordToken, resetPasswordTokenExpiresAT from userEmail WHERE resetPasswordToken = ?"
         conn.query(sqlQuery,[token],(error,result) => {
-            if (error) return response.status(400).json({success: false, message: error})
+            if (error) return response.status(200).json({success: false, message: error})
             if (result.length > 0) {
                 if (result[0].resetPasswordToken && result[0].resetPasswordTokenExpiresAT >=  new Date().getHours()) {
                     const querySQ = "UPDATE userEmail SET password = ? WHERE resetPasswordToken = ?"
                     conn.query(querySQ,[hpassword,token], (err,results) => {
-                        if (err) return response.status(400).json({success: false, message: err})
+                        if (err) return response.status(200).json({success: false, message: err})
                         return response.status(200).json({success: true, message: "password updated successfully"})
                     })
                 } else {
-                    return response.status(400).json({success: false, message: "Token expired or Invalid token"})
+                    return response.status(200).json({success: false, message: "Token expired or Invalid token"})
                 }
             }else {
                 return response.status(403).json({success: false, message: "Token invalid"})
