@@ -1,9 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import Inputs from '../components/Inputs'
 import { Loader, Lock, Mail, User } from 'lucide-react'
+import Password from './Password'
 function Signup() {
+    const [values,setValues] = useState({
+        firstName:"",
+        lastName:"",
+        email:"",
+        password:""
+    })
     const isLoading = false
+    const handleValue = (event) => {
+        const { value, name} = event.target
+        setValues((prev) => ({
+            ...prev,
+            [name] : value
+        }))
+    }
+    console.log(values)
   return (
     <motion.div
     initial={{opacity: 0, y:20}}
@@ -18,24 +33,32 @@ function Signup() {
                 <Inputs
                 icon={User}
                 type="text"
+                name="firstName"
+                onChange={handleValue}
                 placeholder="First Name"
                 />
                 <Inputs
                 icon={User}
                 type="text"
+                name="lastName"
+                onChange={handleValue}
                 placeholder="Last Name"
                 />
                 <Inputs
                 icon={Mail}
                 type="email"
+                name="email"
+                onChange={handleValue}
                 placeholder="Email"
                 />
                 <Inputs
                 icon={Lock}
                 type="password"
+                name="password"
+                onChange={handleValue}
                 placeholder="Password"
                 />
-                 <motion.button
+                <motion.button
                 className='mt-5 w-full py-3 px-4 bg-gradient-to-r from-gray-500 to-gray-600 text-white
                 font-bold rounded-lg shadow-lg hover:from-gray-700 hover:to-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500
                 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200'
