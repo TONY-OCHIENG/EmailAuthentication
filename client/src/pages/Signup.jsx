@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import Inputs from '../components/Inputs'
 import { Loader, Lock, Mail, User } from 'lucide-react'
 import Password from './Password'
+import toast from 'react-hot-toast'
 function Signup() {
     const [values,setValues] = useState({
         firstName:"",
@@ -10,7 +11,7 @@ function Signup() {
         email:"",
         password:""
     })
-    const isLoading = false
+    const {signup,isLoading,message} = useAuthStore()
     const handleValue = (event) => {
         const { value, name} = event.target
         setValues((prev) => ({
@@ -18,7 +19,7 @@ function Signup() {
             [name] : value
         }))
     }
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
     }
   return (
