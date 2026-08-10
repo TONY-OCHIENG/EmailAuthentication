@@ -145,7 +145,9 @@ export const resetPassword = async (request,response) => {
                 const querySQ = "INSERT INTO userEmail(resetPasswordToken,resetPasswordTokenExpiresAT) VALUES(?,?)"
                 conn.query(querySQ,[resetPasswordToken,resetPasswordTokenExpiresAT],(err,results) => {
                     if (err) return response.status(400).json({success: false, message: err})
-                    if (results.length > 0) {}
+                    if (results.length > 0) {
+                        
+                    }
                 })
             } else {
                 return response.status(400).json({success: false, message: "user doesn't exist"})

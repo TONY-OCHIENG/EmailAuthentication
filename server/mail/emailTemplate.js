@@ -257,3 +257,186 @@ export const WELCOME_EMAIL = `
 
 
 `
+export const RESET_LINK = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reset Your Password</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #f4f5f7;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  .email-wrapper {
+    width: 100%;
+    background-color: #f4f5f7;
+    padding: 40px 0;
+  }
+
+  .email-container {
+    max-width: 480px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  }
+
+  .email-header {
+    background-color: #4f46e5;
+    padding: 28px 32px;
+    text-align: center;
+  }
+
+  .email-header h1 {
+    color: #ffffff;
+    font-size: 20px;
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .email-body {
+    padding: 36px 32px;
+    color: #333333;
+  }
+
+  .email-body h2 {
+    font-size: 20px;
+    margin: 0 0 16px;
+    color: #1a1a1a;
+  }
+
+  .email-body p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 20px;
+    color: #4b4b4b;
+  }
+
+  .btn-wrapper {
+    text-align: center;
+    margin: 28px 0;
+  }
+
+  .btn {
+    display: inline-block;
+    background-color: #4f46e5;
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 6px;
+  }
+
+  .fallback-link {
+    font-size: 13px;
+    color: #6b6b6b;
+    word-break: break-all;
+    margin-top: 8px;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #eaeaea;
+    margin: 28px 0;
+  }
+
+  .expiry-note {
+    font-size: 13px;
+    color: #9a9a9a;
+    text-align: center;
+  }
+
+  .email-footer {
+    padding: 24px 32px;
+    text-align: center;
+    background-color: #fafafa;
+  }
+
+  .email-footer p {
+    font-size: 12px;
+    color: #9a9a9a;
+    margin: 4px 0;
+  }
+
+  @media only screen and (max-width: 480px) {
+    .email-container {
+      width: 100% !important;
+      border-radius: 0;
+    }
+    .email-body, .email-header, .email-footer {
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <table role="presentation" class="email-wrapper" width="100%">
+    <tr>
+      <td>
+        <table role="presentation" class="email-container" width="100%">
+
+          <!-- Header -->
+          <tr>
+            <td class="email-header">
+              <h1>YourApp</h1>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td class="email-body">
+              <h2>Reset your password</h2>
+              <p>Hi there,</p>
+              <p>
+                We received a request to reset the password for your account.
+                Click the button below to choose a new password. If you didn't
+                request this, you can safely ignore this email.
+              </p>
+
+              <div class="btn-wrapper">
+                <a href="{RESET_LINK}" class="btn" target="_blank">Reset Password</a>
+              </div>
+
+              <p class="fallback-link">
+                If the button doesn't work, copy and paste this link into your browser:<br>
+                <a href="{RESET_LINK}" style="color:#4f46e5;">{RESET_LINK}</a>
+              </p>
+
+              <hr class="divider">
+
+              <p class="expiry-note">
+                This link will expire in 1 hour for your security.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td class="email-footer">
+              <p>&copy; {2026} YourApp, Inc. All rights reserved.</p>
+              <p>tonyochiengdh@gmail.com</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
+
+`
