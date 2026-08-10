@@ -180,7 +180,7 @@ export const newPassword = async (request,response) => {
         conn.query(sqlQuery,[token],(error,result) => {
             if (error) return response.status(400).json({success: false, message: error})
             if (result.length > 0) {
-                if (result[0].resetPasswordToken && result[0].resetPasswordTokenExpiresAT >= Date.now()) {
+                if (result[0].resetPasswordToken && result[0].resetPasswordTokenExpiresAT >=  new Date().getHours()) {
                     const querySQ = "UPDATE userEmail SET password = ? WHERE resetPasswordToken = ?"
                     conn.query(querySQ,[hpassword,token], (err,results) => {
                         if (err) return response.status(400).json({success: false, message: err})
