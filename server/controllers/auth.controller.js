@@ -186,6 +186,8 @@ export const newPassword = async (request,response) => {
                         if (err) return response.status(400).json({success: false, message: err})
                         return response.status(200).json({success: true, message: "password updated successfully"})
                     })
+                } else {
+                    return response.status(400).json({success: false, message: "Token expired or Invalid token"})
                 }
             }else {
                 return response.status(403).json({success: false, message: "Token invalid"})
