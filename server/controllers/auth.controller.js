@@ -4,6 +4,7 @@ import conn from "../database/db.js"
 import { resetLink, verificationCodeEmail, welcomeEmail } from "../mail/mail.js"
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
+import e from "express"
 
 export const signup = async (request,response) => {
     const { firstName, lastName, email, password} = request.body
@@ -157,5 +158,18 @@ export const resetPassword = async (request,response) => {
     } catch (error) {
         console.log(error)
         return response.status(500).json({success: false, message:"Internal server error"})
+    }
+}
+
+export const newPassword = async (request,response) => {
+    const { password,confirmationpassword} = request.body
+    const { token } = request.params
+
+    if (!password || !confirmationpassword) {
+        return response.status(400).json({success: false, message: "fill all the fields"})
+    }
+
+    if (password != confirmationpassword) {
+        return response.status(400).json({success: false, message: "Password didn't match"})
     }
 }
