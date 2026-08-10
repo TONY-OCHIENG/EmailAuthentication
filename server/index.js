@@ -12,7 +12,7 @@ app.use(cors({
     origin:'http://localhost:5173',
     methods:['PUT','GET','POST','DELETE'],
     credentials:true,
-}))
+})) 
 app.use("/api/auth",authRoutes)
 app.listen(process.env.PORT,() => {
     console.log("server is running")

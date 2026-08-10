@@ -33,29 +33,25 @@ export const signup = async (request,response) => {
     const verificationTokenExpiresAT = new Date(Date.now() + 24 * 60 * 60 * 1000) 
     //checking if the email exists
     try {
-        const sqlQuery = "SELECT email from userEmail WHERE email = ?"
-        conn.query(sqlQuery,[email], (error,result) => {
-            if (error) return response.status(400).json({success: false, message: error})
+        const checkEmail = "SELECT email from userEmail WHERE email = ?"
+        conn.query(checkEmail,[email], (error,result) => {
+            
+            if (error) return response.status(500).json({success: false, message: error})
             if (result.length > 0) {
                 return response.status(400).json({success: false, message: "email already exist"})
             }
-        })
+
+            const sqlQuery = "INSERT INTO userEmail(firstName,lastName,email,password,verificationToken,verificationTokenExpiresAT) VALUES(?,?,?,?,?,?)"
+            conn.query(sqlQuery,[firstName,lastName,email,encryptedPassword,verificationToken,verificationTokenExpiresAT],(error,results) => {
+                if (error) return response.status(500).json({success: false, message: error})
+                    return response.status(201).json({success: true, message:"Account created successfully"})
+            })
+            verificationCodeEmail(email,verificationToken)
+        }) 
     } catch (error) {
         console.log(error)
         return response.status(500).json({success: false, message: "Internal server error"})        
     } 
-
-    try {
-        const sqlQuery = "INSERT INTO userEmail(firstName,lastName,email,password,verificationToken,verificationTokenExpiresAT) VALUES(?,?,?,?,?,?)"
-        conn.query(sqlQuery,[firstName,lastName,email,encryptedPassword,verificationToken,verificationTokenExpiresAT],(error,results) => {
-            if (error) return response.status(400).json({success: false, message: error})
-                return response.status(201).json({success: true, message:"Account created successfully"})
-        })
-        verificationCodeEmail(email,verificationToken)
-    } catch (error) {
-        console.log(error)
-        return response.status(500).json({success: false, message: "Internal server error"})
-    }
 }
 
 export const verifyCode = async (request, response) => {
