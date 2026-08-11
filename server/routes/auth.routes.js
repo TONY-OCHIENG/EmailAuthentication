@@ -6,5 +6,5 @@ authRoutes.post("/signup",signup)
 authRoutes.post("/verifyCode",verifyCode)
 authRoutes.post("/login",login)
 authRoutes.post("/resetPassword",resetPassword)
-authRoutes.put("/newpassword/:id",newPassword)
+authRoutes.put("/newpassword/:token",newPassword)
 export default authRoutes

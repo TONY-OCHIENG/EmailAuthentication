@@ -161,7 +161,7 @@ export const resetPassword = async (request,response) => {
 
 export const newPassword = async (request,response) => {
     const { password,confirmationpassword} = request.body
-    const { id } = request.params
+    const { token } = request.params
 
     if (!password || !confirmationpassword) {
         return response.status(200).json({success: false, message: "fill all the fields"})
