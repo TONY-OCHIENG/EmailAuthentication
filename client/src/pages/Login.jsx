@@ -25,11 +25,11 @@ function Login() {
     }
     const handleSubmit = async (event) => {
         event.preventDefault()
-        axios.post(`${API_URL}/signup`,values)
+        axios.post(`${API_URL}/login`,values)
         .then((response) => {
             if (response.data.success) {
                 toast.success(response.data.message)
-                navigate('/verification-code')
+                navigate('/')
             } else {
                 toast.error(response.data.message)
             }
