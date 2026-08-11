@@ -24,11 +24,10 @@ function Forgot() {
     }
     const handleSubmit = async (event) => {
         event.preventDefault()
-        axios.post(`${API_URL}/login`,values)
+        axios.post(`${API_URL}/resetPassword`,values)
         .then((response) => {
             if (response.data.success) {
                 toast.success(response.data.message)
-                navigate('/')
             } else {
                 toast.error(response.data.message)
             }
