@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import FloatingIcons from './components/FloatingIcons'
 import Otp from './pages/Otp'
 import Forgot from './pages/Forgot'
+import Password from './pages/Password'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path='/verification-code' element={<Otp/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/forgot-link' element={<Forgot/>}/>
+        <Route path='/reset-password/:id' element={<Password/>}/>
       </Routes>
       <Toaster/>
     </div>

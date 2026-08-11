@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import Inputs from '../components/Inputs'
 import { Loader, Lock, Mail, User } from 'lucide-react'
-import Password from './Password'
 import toast from 'react-hot-toast'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 
 const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/auth" : "/api/auth"
@@ -14,6 +13,7 @@ function Password() {
         password:"",
         confirmationpassword:""
     })
+    const { id } = useParams()
     const [isLoading, setLoading] = useState(false)
     const navigate = useNavigate()
     const handleValue = (event) => {
@@ -25,7 +25,7 @@ function Password() {
     }
     const handleSubmit = async (event) => {
         event.preventDefault()
-        axios.post(`${API_URL}/newpassword`,values)
+        axios.put(`${API_URL}/newpassword/${id}`,values)
         .then((response) => {
             if (response.data.success) {
                 toast.success(response.data.message)
