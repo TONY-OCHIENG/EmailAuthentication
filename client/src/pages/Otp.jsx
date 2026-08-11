@@ -97,13 +97,13 @@ function Otp() {
             ))
           }
         </div>
-           <motion.button
+        <motion.button
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
 						type='submit'
 						disabled={isLoading || verificationCode.some((digit) => !digit)}
 						className='w-full bg-gradient-to-r from-gray-500 to-gray-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:from-gray-600 hover:to-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 disabled:opacity-50'
-			>
+			  >
 						{isLoading ? "Verifying..." : "Verify Email"}
 			</motion.button>
       </form>
