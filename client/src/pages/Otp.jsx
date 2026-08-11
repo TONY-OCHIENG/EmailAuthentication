@@ -52,6 +52,7 @@ function Otp() {
 
           if (response.data.success) {
             setLoading(false)
+            navigate("/login")
             toast.success(response.data.message)
           } else {
             toast.error(response.data.message)
