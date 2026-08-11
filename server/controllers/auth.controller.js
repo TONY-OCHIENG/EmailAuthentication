@@ -55,7 +55,8 @@ export const signup = async (request,response) => {
 }
 
 export const verifyCode = async (request, response) => {
-    const { code } = request.body
+    const { code } = request.body 
+    console.log(code)
     if (!code) {
         return response.status(200).json({success: false, message: "Enter a valid code"})
     }
@@ -85,7 +86,9 @@ export const verifyCode = async (request, response) => {
                 } else {
                     return response.status(200).json({success: false, message: "Enter a valid code or code expired"})
                 }                
-            }
+            }else {
+                    return response.status(200).json({success: false, message: "Enter a valid code or code expired"})
+            } 
         })
     } catch (error) {
         console.log(error)
