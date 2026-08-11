@@ -53,6 +53,9 @@ function Otp() {
           if (response.data.success) {
             setLoading(false)
             toast.success(response.data.message)
+          } else {
+            toast.error(response.data.message)
+            setLoading(false)
           }
         })
         .catch((error) => {
