@@ -4,6 +4,10 @@ import Inputs from '../components/Inputs'
 import { Loader, Lock, Mail, User } from 'lucide-react'
 import Password from './Password'
 import toast from 'react-hot-toast'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+
+const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/auth" : "/api/auth"
 function Signup() {
     const [values,setValues] = useState({
         firstName:"",
@@ -11,7 +15,8 @@ function Signup() {
         email:"",
         password:""
     })
-    const {signup,isLoading,message} = useAuthStore()
+    const [isLoading, setLoading] = useState(false)
+    const navigate = useNavigate()
     const handleValue = (event) => {
         const { value, name} = event.target
         setValues((prev) => ({
@@ -21,6 +26,18 @@ function Signup() {
     }
     const handleSubmit = async (event) => {
         event.preventDefault()
+        axios.post(`${API_URL}/signup`,values)
+        .then((response) => {
+            if (response.data.success) {
+                toast.success(response.data.message)
+                navigate('/verification-code')
+            } else {
+                toast.error(response.data.message)
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+        })
     }
   return (
     <motion.div
@@ -72,6 +89,7 @@ function Signup() {
                 >
                     {isLoading ? <Loader className=' animate-spin mx-auto' size={24} /> : "Sign Up"}
                 </motion.button>
+                <p className='mt-6 text-xs text-gray-300 '>Already have an Account <Link to={'/login'} className='font-extrabold'>Click to login</Link></p>
             </form>
         </div>
     </motion.div>
