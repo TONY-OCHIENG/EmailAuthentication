@@ -3,9 +3,9 @@ import { Toaster } from 'react-hot-toast'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import Signup from './pages/Signup'
-import Code from './pages/Code'
 import Login from './pages/Login'
 import FloatingIcons from './components/FloatingIcons'
+import Otp from './pages/Otp'
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/signup' element={<Signup/>}/>
-        <Route path='/verification-code' element={<Code/>}/>
+        <Route path='/verification-code' element={<Otp/>}/>
         <Route path='/login' element={<Login/>}/>
       </Routes>
       <Toaster/>
